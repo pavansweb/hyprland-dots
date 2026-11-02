@@ -3,6 +3,7 @@ import os
 import sys
 import json
 import signal
+import socket
 import subprocess
 import datetime
 import psutil
@@ -20,10 +21,14 @@ class DesktopWidget(Gtk.Window):
         # Load saved position or default to x: 80, y: 50
         self.current_x, self.current_y = self.load_position()
         self.dragging = False
-        self.drag_start_x = 0
-        self.drag_start_y = 0
+        self.drag_start_cx = 0
+        self.drag_start_cy = 0
         self.orig_x = self.current_x
         self.orig_y = self.current_y
+        self.target_x = self.current_x
+        self.target_y = self.current_y
+        self.move_scheduled = False
+        self.seat_grabbed = False
 
         # Setup GtkLayerShell: ALWAYS PINNED TO DESKTOP (BOTTOM LAYER)
         GtkLayerShell.init_for_window(self)
@@ -107,10 +112,29 @@ class DesktopWidget(Gtk.Window):
             style_context = Gtk.StyleContext()
             style_context.add_provider_for_screen(screen, css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
+    def get_cursor_pos(self):
+        sig = os.environ.get("HYPRLAND_INSTANCE_SIGNATURE")
+        runtime = os.environ.get("XDG_RUNTIME_DIR", "/run/user/1000")
+        if not sig:
+            return 0, 0
+        sock_path = os.path.join(runtime, "hypr", sig, ".socket.sock")
+        try:
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+                s.settimeout(0.04)
+                s.connect(sock_path)
+                s.sendall(b"cursorpos")
+                s.shutdown(socket.SHUT_WR)
+                data = s.recv(64).decode("utf-8", errors="ignore").strip()
+                parts = [p.strip() for p in data.split(",")]
+                return int(parts[0]), int(parts[1])
+        except Exception:
+            return 0, 0
+
     def create_header_card(self):
         # EventBox wraps the header card so it can be clicked & dragged with mouse
         eb = Gtk.EventBox()
         eb.set_visible_window(False)
+        eb.set_above_child(True)
         eb.add_events(
             Gdk.EventMask.BUTTON_PRESS_MASK |
             Gdk.EventMask.BUTTON_RELEASE_MASK |
@@ -159,7 +183,7 @@ class DesktopWidget(Gtk.Window):
     # Mouse Dragging Handlers
     def on_mouse_enter(self, widget, event):
         win = self.get_window()
-        if win:
+        if win and not self.dragging:
             display = Gdk.Display.get_default()
             win.set_cursor(Gdk.Cursor.new_from_name(display, "grab"))
         return False
@@ -174,37 +198,87 @@ class DesktopWidget(Gtk.Window):
     def on_drag_start(self, widget, event):
         if event.button == 1: # Left click
             self.dragging = True
-            self.drag_start_x = event.x_root
-            self.drag_start_y = event.y_root
+            cx, cy = self.get_cursor_pos()
+            self.drag_start_cx = cx
+            self.drag_start_cy = cy
             self.orig_x = self.current_x
             self.orig_y = self.current_y
+            self.target_x = self.current_x
+            self.target_y = self.current_y
+            self.move_scheduled = False
+
+            # Grab pointer seat so fast motions anywhere on the entire screen continue to be delivered
             win = self.get_window()
             if win:
                 display = Gdk.Display.get_default()
-                win.set_cursor(Gdk.Cursor.new_from_name(display, "grabbing"))
+                seat = display.get_default_seat()
+                cursor = Gdk.Cursor.new_from_name(display, "grabbing")
+                seat.grab(win, Gdk.SeatCapabilities.ALL_POINTING, False, cursor, event, None, None)
+                self.seat_grabbed = True
             return True
         return False
 
     def on_drag_motion(self, widget, event):
-        if self.dragging:
-            dx = int(event.x_root - self.drag_start_x)
-            dy = int(event.y_root - self.drag_start_y)
-            new_x = max(10, min(1920 - 700, self.orig_x + dx))
-            new_y = max(10, min(1080 - 450, self.orig_y + dy))
-            self.current_x = new_x
-            self.current_y = new_y
-            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.LEFT, new_x)
-            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.TOP, new_y)
-            return True
+        if not self.dragging:
+            return False
+
+        cx, cy = self.get_cursor_pos()
+        if cx == 0 and cy == 0:
+            return False
+
+        dx = cx - self.drag_start_cx
+        dy = cy - self.drag_start_cy
+
+        # Determine boundaries
+        alloc = self.get_allocation()
+        w = alloc.width if alloc.width > 200 else 680
+        h = alloc.height if alloc.height > 100 else 460
+        max_w = 1920
+        max_h = 1080
+
+        self.target_x = max(10, min(max_w - w - 10, self.orig_x + dx))
+        self.target_y = max(10, min(max_h - h - 10, self.orig_y + dy))
+
+        if not self.move_scheduled:
+            self.move_scheduled = True
+            GLib.idle_add(self._apply_drag_move)
+        return True
+
+    def _apply_drag_move(self):
+        self.move_scheduled = False
+        if not self.dragging:
+            return False
+        if self.target_x != self.current_x or self.target_y != self.current_y:
+            self.current_x = self.target_x
+            self.current_y = self.target_y
+            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.LEFT, self.current_x)
+            GtkLayerShell.set_margin(self, GtkLayerShell.Edge.TOP, self.current_y)
         return False
 
     def on_drag_end(self, widget, event):
         if event.button == 1 and self.dragging:
             self.dragging = False
+            self.move_scheduled = False
+
+            # Ungrab pointer seat
+            if getattr(self, "seat_grabbed", False):
+                display = Gdk.Display.get_default()
+                seat = display.get_default_seat()
+                seat.ungrab()
+                self.seat_grabbed = False
+
+            # Ensure final position is applied
+            if self.target_x != self.current_x or self.target_y != self.current_y:
+                self.current_x = self.target_x
+                self.current_y = self.target_y
+                GtkLayerShell.set_margin(self, GtkLayerShell.Edge.LEFT, self.current_x)
+                GtkLayerShell.set_margin(self, GtkLayerShell.Edge.TOP, self.current_y)
+
             win = self.get_window()
             if win:
                 display = Gdk.Display.get_default()
                 win.set_cursor(Gdk.Cursor.new_from_name(display, "grab"))
+
             self.save_position()
             return True
         return False
