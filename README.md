@@ -14,14 +14,19 @@ cd hyprland-dots
 \`\`\`
 
 ### 2. Copy Configuration Files
-Copy the contents of this repository to your \`~/.config/hypr\` directory:
+Copy configuration files to their respective destinations:
 \`\`\`bash
+# Hyprland & Desktop Widgets
 mkdir -p ~/.config/hypr
-cp -r ./* ~/.config/hypr/
-# Remove the local git and Pictures folder from the config path if they were copied
-rm -rf ~/.config/hypr/.git
-rm -rf ~/.config/hypr/Pictures
-rm ~/.config/hypr/README.md
+cp -r confs pypr scripts widgets icons lockscreens assets hypr*.conf hypr*.lua ~/.config/hypr/
+
+# Waybar (Left Floating Dock)
+mkdir -p ~/.config/waybar
+cp -r waybar/* ~/.config/waybar/
+
+# Brave flags & Shell
+cp brave-flags.conf ~/.config/
+cp .zshrc ~/
 \`\`\`
 
 ### 3. Setup Wallpapers

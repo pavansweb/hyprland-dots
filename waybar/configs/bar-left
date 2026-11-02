@@ -1,0 +1,238 @@
+{
+    "include": [
+        "$HOME/.config/waybar/modules/modules-virt.jsonc",
+        "$HOME/.config/waybar/modules/modules-custom.jsonc",
+        "$HOME/.config/waybar/modules/modules-groups.jsonc"
+    ],
+    "layer": "top",
+    "position": "left",
+    "mod": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "reload_style_on_change": true,
+    "width": 46,
+    "margin-top": 8,
+    "margin-bottom": 8,
+    "margin-left": 8,
+    "margin-right": 0,
+
+    "modules-left": [
+        "custom/launch_rofi",
+        "custom/widgets",
+        "hyprland/workspaces",
+        "mpris"
+    ],
+
+    "modules-center": [
+        "clock",
+        "custom/notify"
+    ],
+
+    "modules-right": [ 
+        "tray",
+        "custom/nightlight",
+        "custom/clipboard",
+        "idle_inhibitor",
+        "pulseaudio",
+        "pulseaudio#microphone",
+        "network",
+        "custom/power_btn"
+    ],
+
+    "hyprland/workspaces": {
+        "disable-scroll": false,
+        "all-outputs": true,
+        "active-only": false,
+        "on-click": "activate",
+        "on-scroll-up": "hyprctl dispatch workspace e-1",
+        "on-scroll-down": "hyprctl dispatch workspace e+1",
+        "format": "{icon}",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "6": "6",
+            "7": "7",
+            "8": "8",
+            "9": "9",
+            "10": "10",
+            "default": "•",
+            "urgent": ""
+        },
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": []
+        }
+    },
+
+    "custom/launch_rofi": {
+        "format": "",
+        "on-click": "rofi -show drun -theme ~/.config/rofi/menu/menu.rasi || pkill rofi",
+        "on-click-right": "kitty --title yazi -e yazi",
+        "tooltip": true,
+        "tooltip-format": "Application Launcher\nLeft Click: Open Rofi\nRight Click: File Manager (yazi)"
+    },
+
+    "custom/widgets": {
+        "format": "󰕮",
+        "tooltip": true,
+        "tooltip-format": "Dashboard Widgets\nClick to toggle widgets HUD",
+        "on-click": "~/.config/hypr/widgets/toggle_widget.sh"
+    },
+
+    "mpris": {
+        "format": "{player_icon}",
+        "format-paused": "{player_icon}",
+        "tooltip": true,
+        "tooltip-format": "{player} ({status})\n{title} - {artist}",
+        "on-click": "playerctl play-pause",
+        "on-click-middle": "playerctl previous",
+        "on-click-right": "playerctl next",
+        "scroll-step": 5.0,
+        "on-scroll-up": "~/.config/hypr/scripts/volumecontrol.sh --inc",
+        "on-scroll-down": "~/.config/hypr/scripts/volumecontrol.sh --dec",
+        "player-icons": {
+            "spotify": "",
+            "chromium": "",
+            "firefox": "󰈹",
+            "default": ""
+        }
+    },
+
+    "clock": {
+        "format": "{:%H\n%M}",
+        "format-alt": "{:%d\n%b}",
+        "tooltip": true,
+        "tooltip-format": "<span font_family='JetBrainsMono Nerd Font' font_size='11pt'>{calendar}</span>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "on-scroll": 1,
+            "format": {
+                "months": "<span color='#89b4fa'><b>{}</b></span>",
+                "weekdays": "<span color='#a6adc8'><b>{}</b></span>",
+                "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right": "mode",
+            "on-scroll-up": "shift_down",
+            "on-scroll-down": "shift_up"
+        }
+    },
+
+    "custom/notify": {
+        "tooltip": true,
+        "tooltip-format": "Notifications\nLeft Click: Notification Center\nRight Click: Do Not Disturb",
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "<span foreground='#f38ba8'><sup></sup></span>",
+            "none": "",
+            "dnd-notification": "<span foreground='#f38ba8'><sup></sup></span>",
+            "dnd-none": "",
+            "inhibited-notification": "<span foreground='#f38ba8'><sup></sup></span>",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "<span foreground='#f38ba8'><sup></sup></span>",
+            "dnd-inhibited-none": ""
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "sleep 0.1 && swaync-client -t -sw",
+        "on-click-right": "swaync-client -d -sw",
+        "escape": true
+    },
+
+    "tray": {
+        "icon-size": 16,
+        "spacing": 8
+    },
+
+    "custom/nightlight": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/.config/hypr/scripts/nightlight.sh --status",
+        "on-click": "~/.config/hypr/scripts/nightlight.sh --toggle",
+        "on-click-right": "~/.config/hypr/scripts/nightlight.sh --def",
+        "on-scroll-up": "~/.config/hypr/scripts/nightlight.sh --dec",
+        "on-scroll-down": "~/.config/hypr/scripts/nightlight.sh --inc",
+        "signal": 11,
+        "interval": 5
+    },
+
+    "custom/clipboard": {
+        "format": "󱉏",
+        "tooltip": true,
+        "tooltip-format": "Clipboard Manager\nLeft Click: Open History\nRight Click: Clear History",
+        "on-click": "~/.config/hypr/scripts/cliphist.sh c",
+        "on-click-right": "~/.config/hypr/scripts/cliphist.sh w"
+    },
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "start-activated": false,
+        "format-icons": {
+            "activated": "",
+            "deactivated": "󰛊"
+        },
+        "tooltip-format-activated": "Caffeine Mode: Active (No sleep)",
+        "tooltip-format-deactivated": "Caffeine Mode: Inactive (Normal sleep)"
+    },
+
+    "pulseaudio": {
+        "format": "{icon}",
+        "format-muted": "󰝟",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""]
+        },
+        "tooltip": true,
+        "tooltip-format": "Audio: {volume}%\nScroll: Adjust\nClick: Mute toggle\nRight Click: Pavucontrol",
+        "on-click": "~/.config/hypr/scripts/volumecontrol.sh --toggle",
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "~/.config/hypr/scripts/volumecontrol.sh --inc",
+        "on-scroll-down": "~/.config/hypr/scripts/volumecontrol.sh --dec",
+        "scroll-step": 5
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": "",
+        "format-source-muted": "",
+        "tooltip": true,
+        "tooltip-format": "Microphone: {volume}%\nClick: Toggle Mute\nRight Click: Pavucontrol",
+        "on-click": "~/.config/hypr/scripts/volumecontrol.sh --toggle-mic",
+        "on-click-right": "pavucontrol",
+        "on-scroll-up": "~/.config/hypr/scripts/volumecontrol.sh --mic-inc",
+        "on-scroll-down": "~/.config/hypr/scripts/volumecontrol.sh --mic-dec",
+        "scroll-step": 5
+    },
+
+    "network": {
+        "format-wifi": "{icon}",
+        "format-ethernet": "󰌘",
+        "format-linked": "󰌘",
+        "format-disconnected": "󰖪",
+        "format-icons": ["󰤯", "󰤟", "󰤢", "󰤥", "󰤨"],
+        "tooltip-format-wifi": "Wi-Fi: {essid} ({signalStrength}%)\nIP: {ipaddr}\nFreq: {frequency}MHz",
+        "tooltip-format-ethernet": "Ethernet: {ifname}\nIP: {ipaddr}",
+        "tooltip-format-disconnected": "Network Disconnected",
+        "on-click": "kitty -e nmtui"
+    },
+
+    "custom/power_btn": {
+        "format": "",
+        "tooltip": true,
+        "tooltip-format": "Power Menu\nClick to open",
+        "on-click": "wlogout -b 6 --layout ~/.config/wlogout/layout --css ~/.config/wlogout/style.css"
+    }
+}

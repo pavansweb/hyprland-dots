@@ -1,17 +1,20 @@
 #!/bin/bash
 
-
 case "$1" in
     --reload)
-        killall waybar
-        waybar &
+        killall waybar 2>/dev/null || true
+        sleep 0.3
+        hyprctl dispatch 'hl.dsp.exec_cmd("waybar")' >/dev/null 2>&1
         sleep 0.3
         hyprctl reload
         ;;
     --toggle)
-        killall waybar || waybar &
+        if pidof waybar >/dev/null; then
+            killall waybar
+        else
+            hyprctl dispatch 'hl.dsp.exec_cmd("waybar")' >/dev/null 2>&1
+        fi
         sleep 0.5
         hyprctl reload
         ;;
 esac
-

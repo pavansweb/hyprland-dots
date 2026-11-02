@@ -48,3 +48,7 @@ hyprctl reload
 pkill waybar
 waybar &
 
+# desktop widget
+pkill -f desktop_widget.py 2>/dev/null || true
+python3 "$HOME/.config/hypr/widgets/desktop_widget.py" &
+

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Prevent multiple concurrent runs (debounce)
+exec 200>/tmp/wallrandom.lock
+flock -n 200 || exit 0
+
 # Directory containing wallpapers
 wallDir="/home/zen/Pictures/wallpapers"
 cacheDir="$HOME/.config/hypr/.cache"

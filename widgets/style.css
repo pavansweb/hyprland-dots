@@ -1,0 +1,230 @@
+/* Antigravity Desktop Home Screen Widget Styles */
+
+* {
+  font-family: "JetBrainsMono Nerd Font", "MesloLGS Nerd Font", sans-serif;
+  color: #cdd6f4;
+}
+
+window.widget-window {
+  background-color: transparent;
+}
+
+.main-container {
+  padding: 0;
+  margin: 0;
+  min-width: 660px;
+}
+
+/* Glassmorphism Card Style */
+.card {
+  background: rgba(26, 27, 38, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+.section-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #89b4fa;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+/* Header Card */
+.header-card {
+  padding: 20px 24px;
+}
+
+.greeting-text {
+  font-size: 20px;
+  font-weight: 800;
+  color: #cdd6f4;
+}
+
+.date-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #89dceb;
+}
+
+.drag-hint {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6c7086;
+  margin-top: 2px;
+}
+
+.clock-text {
+  font-size: 38px;
+  font-weight: 900;
+  color: #74c7ec;
+  font-family: "JetBrainsMono Nerd Font", monospace;
+}
+
+/* Launchers Card */
+.launcher-card {
+  padding: 16px 20px;
+}
+
+/* App Launch Buttons */
+.app-button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 12px 14px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+}
+
+.app-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.app-icon {
+  font-size: 24px;
+  min-width: 32px;
+}
+
+.app-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.app-desc {
+  font-size: 11px;
+  font-weight: 500;
+  color: #a6adc8;
+}
+
+/* Individual App Accents */
+.launcher-brave .app-icon {
+  color: #fab387;
+}
+.launcher-brave:hover {
+  border-color: rgba(250, 179, 135, 0.5);
+  box-shadow: 0 0 16px rgba(250, 179, 135, 0.25);
+}
+
+.launcher-kitty .app-icon {
+  color: #f5c2e7;
+}
+.launcher-kitty:hover {
+  border-color: rgba(245, 194, 231, 0.5);
+  box-shadow: 0 0 16px rgba(245, 194, 231, 0.25);
+}
+
+.launcher-projects .app-icon {
+  color: #f9e2af;
+}
+.launcher-projects:hover {
+  border-color: rgba(249, 226, 175, 0.5);
+  box-shadow: 0 0 16px rgba(249, 226, 175, 0.25);
+}
+
+.launcher-code .app-icon {
+  color: #89b4fa;
+}
+.launcher-code:hover {
+  border-color: rgba(137, 180, 250, 0.5);
+  box-shadow: 0 0 16px rgba(137, 180, 250, 0.25);
+}
+
+/* System Monitor Card */
+.sys-card {
+  min-width: 310px;
+}
+
+.stat-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #bac2de;
+}
+
+.stat-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: #89dceb;
+}
+
+progressbar trough {
+  min-height: 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+}
+
+.cpu-bar progress {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #74c7ec, #89b4fa);
+  border: none;
+}
+
+.ram-bar progress {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #cba6f7, #f5c2e7);
+  border: none;
+}
+
+.disk-bar progress {
+  border-radius: 6px;
+  background: linear-gradient(90deg, #a6e3a1, #94e2d5);
+  border: none;
+}
+
+/* Media Card */
+.media-card {
+  min-width: 310px;
+}
+
+.media-source-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #a6e3a1;
+}
+
+.media-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.media-artist {
+  font-size: 12px;
+  font-weight: 600;
+  color: #a6adc8;
+}
+
+.media-ctrl-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  min-width: 44px;
+  min-height: 38px;
+  font-size: 16px;
+  color: #cdd6f4;
+  transition: all 0.2s ease-in-out;
+  box-shadow: none;
+}
+
+.media-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+.media-play-btn {
+  background: rgba(166, 227, 161, 0.15);
+  border-color: rgba(166, 227, 161, 0.3);
+  color: #a6e3a1;
+  min-width: 50px;
+}
+
+.media-play-btn:hover {
+  background: #a6e3a1;
+  color: #1e1e2e;
+  box-shadow: 0 0 14px rgba(166, 227, 161, 0.4);
+}

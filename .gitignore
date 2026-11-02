@@ -1,0 +1,7 @@
+# Cache and temporary files
+.cache/
+__pycache__/
+*.pyc
+*.pyo
+*.log
+.DS_Store

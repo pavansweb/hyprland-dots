@@ -1,0 +1,292 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font", "MesloLGS Nerd Font", "Font Awesome", monospace;
+  font-weight: 700;
+  font-size: 13px;
+  min-height: 0;
+  min-width: 0;
+}
+
+@import "style/mocha.css";
+@import "style/theme.css";
+
+/* Floating vertical dock window */
+window#waybar {
+  background: rgba(26, 27, 38, 0.78);
+  color: @foreground;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* Tooltip */
+tooltip {
+  background: @base;
+  opacity: 0.96;
+  border-radius: 12px;
+  border: 1px solid @sapphire;
+  padding: 8px 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+tooltip label {
+  font-size: 12px;
+  font-weight: 600;
+  color: @text;
+}
+
+/* App Launcher Button */
+#custom-launch_rofi {
+  color: @blue;
+  background: rgba(137, 180, 250, 0.12);
+  font-size: 18px;
+  padding: 10px 0;
+  margin: 6px 5px 4px 5px;
+  border-radius: 14px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#custom-launch_rofi:hover {
+  background: @blue;
+  color: @base;
+  box-shadow: 0 0 14px rgba(137, 180, 250, 0.5);
+}
+
+/* Widgets Toggle Button */
+#custom-widgets {
+  color: @mauve;
+  background: rgba(203, 166, 247, 0.12);
+  font-size: 16px;
+  padding: 8px 0;
+  margin: 2px 5px 6px 5px;
+  border-radius: 12px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#custom-widgets:hover {
+  background: @mauve;
+  color: @base;
+  box-shadow: 0 0 14px rgba(203, 166, 247, 0.5);
+}
+
+/* Workspaces */
+#workspaces {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px 0;
+  margin: 4px 5px;
+  border-radius: 14px;
+}
+
+#workspaces button {
+  padding: 5px 0;
+  margin: 3px 4px;
+  color: @overlay1;
+  background: transparent;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#workspaces button.active {
+  color: @base;
+  background: @foreground;
+  box-shadow: 0 0 10px rgba(141, 168, 227, 0.45);
+  font-weight: 900;
+}
+
+#workspaces button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: @rosewater;
+}
+
+#workspaces button.urgent {
+  color: @base;
+  background: @red;
+}
+
+/* Media Player (mpris) */
+#mpris {
+  color: @green;
+  font-size: 16px;
+  padding: 8px 0;
+  margin: 4px 5px;
+  border-radius: 12px;
+  background: rgba(166, 227, 161, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+#mpris.paused {
+  color: @overlay0;
+  background: transparent;
+}
+
+#mpris:hover {
+  background: rgba(166, 227, 161, 0.25);
+  color: @green;
+}
+
+/* Clock */
+#clock {
+  font-family: "JetBrainsMono Nerd Font", monospace;
+  font-weight: 800;
+  font-size: 13px;
+  padding: 8px 2px;
+  margin: 4px 5px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: @sapphire;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.2s ease-in-out;
+}
+
+#clock:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: @sky;
+}
+
+/* Notification Bell */
+#custom-notify {
+  color: @yellow;
+  font-size: 15px;
+  padding: 7px 0;
+  margin: 3px 5px;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+#custom-notify:hover {
+  background: rgba(249, 226, 175, 0.15);
+}
+
+/* System Tray */
+#tray {
+  padding: 6px 0;
+  margin: 3px 5px;
+}
+
+#tray > .passive {
+  -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+}
+
+/* Night Light */
+#custom-nightlight {
+  color: @peach;
+  font-size: 15px;
+  padding: 7px 0;
+  margin: 3px 5px;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+#custom-nightlight:hover {
+  background: rgba(250, 179, 135, 0.15);
+}
+
+/* Clipboard */
+#custom-clipboard {
+  color: @lavender;
+  font-size: 15px;
+  padding: 7px 0;
+  margin: 3px 5px;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+#custom-clipboard:hover {
+  background: rgba(180, 190, 254, 0.15);
+}
+
+/* Idle Inhibitor (Caffeine) */
+#idle_inhibitor {
+  color: @mauve;
+  font-size: 15px;
+  padding: 7px 0;
+  margin: 3px 5px;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+#idle_inhibitor.activated {
+  color: @red;
+  background: rgba(243, 139, 168, 0.15);
+}
+
+#idle_inhibitor:hover {
+  background: rgba(203, 166, 247, 0.15);
+}
+
+/* Audio & Mic */
+#pulseaudio {
+  color: @blue;
+  font-size: 15px;
+  padding: 7px 0;
+  margin: 3px 5px;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+#pulseaudio.muted {
+  color: @overlay0;
+}
+
+#pulseaudio:hover {
+  background: rgba(137, 180, 250, 0.15);
+}
+
+#pulseaudio.microphone {
+  color: @teal;
+  font-size: 14px;
+  padding: 7px 0;
+  margin: 3px 5px;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+#pulseaudio.microphone.source-muted {
+  color: @overlay0;
+}
+
+#pulseaudio.microphone:hover {
+  background: rgba(148, 226, 213, 0.15);
+}
+
+/* Network */
+#network {
+  color: @teal;
+  font-size: 15px;
+  padding: 7px 0;
+  margin: 3px 5px;
+  border-radius: 12px;
+  transition: all 0.2s ease-in-out;
+}
+
+#network.disconnected {
+  color: @red;
+}
+
+#network:hover {
+  background: rgba(148, 226, 213, 0.15);
+}
+
+/* Power Button */
+#custom-power_btn {
+  color: @red;
+  background: rgba(243, 139, 168, 0.12);
+  font-size: 16px;
+  padding: 10px 0;
+  margin: 5px 5px 6px 5px;
+  border-radius: 14px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#custom-power_btn:hover {
+  background: @red;
+  color: @base;
+  box-shadow: 0 0 14px rgba(243, 139, 168, 0.5);
+}

@@ -40,3 +40,7 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt appendhistory
 export PATH=~/.npm-global/bin:~/.local/bin:$PATH
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/zen/.local/bin:$PATH"

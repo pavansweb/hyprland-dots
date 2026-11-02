@@ -1,0 +1,71 @@
+ = 
+ + Return | open terminal (kitty)
+ + SHIFT + Return | open floating terminal (kitty)
+ + Q | kill active window
+ + D | launch app menu (rofi)
+ + W | change wallpaper (Wallpaper.sh)
+ + T | change theme
+ + SHIFT + W | select wallpaper (WallpaperSelect.sh)
+ + ALT + E | switch wallpaper engine (awww/hyprpaper)
+ + E | open file manager (Nautilus)
+ + SHIFT + E | open terminal file manager (Yazi)
+ + V | toggle floating window
+ + ALT + V | toggle all windows to float
+ + F | toggle fullscreen
+ + ALT + D | switch Rofi theme
+ + ALT + C | clipboard manager
+ + ALT + W | wipe clipboard history
+ + SHIFT + D | open emoji picker
+ + SHIFT + P | toggle pseudo-tiling
+ + X | open power menu
+ + ALT + X | switch power menu theme
+ + C | open VS Code
+ + B | open browser (Default)
+ALT + B | reset default browser
+CTRL + ESCAPE | reload Waybar
+CTRL + ALT + ESCAPE | toggle Waybar visibility
+ + SHIFT + L | lockscreen (hyprlock)
+ + ALT + L | lockscreen theme (hyprlock)
+ + CTRL + W | switch Waybar layout
+ + CTRL + E | edit dotfiles
+ + CTRL + R | reload Hyprland
+CTRL + U | system update
+ + CTRL + U | updated hyprconf
+PRINT | screenshot menu
+ + SHIFT + S | area screenshot (snip)
+ + ALT + S | screenshot & annotate (Satty)
+ + SHIFT + H | show keybind help
+ + SHIFT + M | exit Hyprland
+ + N | toggle special minimized (pyprland)
+ + SHIFT + N | toggle minimized (pyprland)
+ + SHIFT + O | shift monitor (pyprland)
+ + SHIFT + R | run startup script
+ + SHIFT + Z | ++ zoom
+ + Z | zoom
+ + S | open settings in terminal
+ + TAB | switch windows with Rofi
+ALT + TAB | Cycle through Windows
+FN / F2 | open mail.google.com
+FN / F3 | open Brave (Private)
+FN / F5 | open Spotify
+FN / F6 | previous song
+FN / F7 | play / pause song
+FN / F8 | next song
+ + \ | toggle home screen widgets
+FN / F9 | toggle audio mute
+FN / F10 | decrease volume
+FN / F11 | increase volume
+ + J | move focus down
+ + K | move focus up
+ + L | move focus right
+ + H | move focus left
+ + CTRL + J | move window down
+ + CTRL + K | move window up
+ + CTRL + L | move window right
+ + CTRL + H | move window left
+ + 1-0 | switch workspace 1-10
+ + SHIFT + 1-0 | move window to workspace 1-10
+ + ALT + 1-0 | move window silently to workspace 1-10
+ + mouse scroll | cycle workspaces
+ + left click | move window
+ + right click | resize window
