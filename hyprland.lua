@@ -323,6 +323,7 @@ hl.bind("CTRL + ESCAPE", hl.dsp.exec_cmd(scriptsDir .. "/waybar-reload.sh --togg
 hl.bind("CTRL + ALT + ESCAPE", hl.dsp.exec_cmd(scriptsDir .. "/waybar-reload.sh --reload"))
 hl.bind(mainMod .. " + CTRL + w", hl.dsp.exec_cmd(scriptsDir .. "/waybar-layout.sh"))
 hl.bind(mainMod .. " + backslash", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/widgets/toggle_widget.sh"))
+hl.bind(mainMod .. " + Delete", hl.dsp.exec_cmd(scriptsDir .. "/clear_cache.sh"))
 
 -- Lockscreen
 hl.bind(mainMod .. " + SHIFT + l", hl.dsp.exec_cmd("hyprlock"))

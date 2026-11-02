@@ -176,6 +176,59 @@ progressbar trough {
   border: none;
 }
 
+/* Clear Cache / System Boost Button */
+.clear-cache-btn {
+  background: rgba(137, 180, 250, 0.12);
+  border: 1px solid rgba(137, 180, 250, 0.25);
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-top: 6px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: none;
+}
+
+.clear-cache-btn:hover {
+  background: rgba(137, 180, 250, 0.24);
+  border-color: rgba(137, 180, 250, 0.5);
+  box-shadow: 0 0 14px rgba(137, 180, 250, 0.3);
+}
+
+.clear-cache-btn:active {
+  background: rgba(137, 180, 250, 0.35);
+}
+
+.clear-cache-icon {
+  font-size: 15px;
+  color: #89b4fa;
+}
+
+.clear-cache-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #cdd6f4;
+  letter-spacing: 0.3px;
+}
+
+.clear-cache-btn.clearing {
+  background: rgba(249, 226, 175, 0.18);
+  border-color: rgba(249, 226, 175, 0.5);
+}
+
+.clear-cache-btn.clearing .clear-cache-icon,
+.clear-cache-btn.clearing .clear-cache-label {
+  color: #f9e2af;
+}
+
+.clear-cache-btn.done {
+  background: rgba(166, 227, 161, 0.2);
+  border-color: rgba(166, 227, 161, 0.5);
+}
+
+.clear-cache-btn.done .clear-cache-icon,
+.clear-cache-btn.done .clear-cache-label {
+  color: #a6e3a1;
+}
+
 /* Media Card */
 .media-card {
   min-width: 310px;

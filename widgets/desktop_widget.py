@@ -319,7 +319,61 @@ class DesktopWidget(Gtk.Window):
         disk_box.pack_start(self.disk_bar, False, False, 0)
         card.pack_start(disk_box, False, False, 0)
 
+        # Clear Cache / System Boost Button
+        self.clear_cache_btn = Gtk.Button()
+        self.clear_cache_btn.get_style_context().add_class("clear-cache-btn")
+        btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
+        btn_box.set_halign(Gtk.Align.CENTER)
+        self.clear_cache_icon = Gtk.Label(label="󰃢")
+        self.clear_cache_icon.get_style_context().add_class("clear-cache-icon")
+        self.clear_cache_lbl = Gtk.Label(label="Boost & Clear Cache")
+        self.clear_cache_lbl.get_style_context().add_class("clear-cache-label")
+        btn_box.pack_start(self.clear_cache_icon, False, False, 0)
+        btn_box.pack_start(self.clear_cache_lbl, False, False, 0)
+        self.clear_cache_btn.add(btn_box)
+        self.clear_cache_btn.connect("clicked", self.on_clear_cache_clicked)
+        card.pack_start(self.clear_cache_btn, False, False, 0)
+
         return card
+
+    def on_clear_cache_clicked(self, btn):
+        if getattr(self, "is_clearing", False):
+            return
+        self.is_clearing = True
+        self.clear_cache_btn.set_sensitive(False)
+        self.clear_cache_btn.get_style_context().add_class("clearing")
+        self.clear_cache_icon.set_text("󱑑")
+        self.clear_cache_lbl.set_text("Clearing Cache...")
+
+        import threading
+
+        def run_clean():
+            script = os.path.expanduser("~/.config/hypr/scripts/clear_cache.sh")
+            try:
+                subprocess.run(["bash", script], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except Exception as e:
+                print("Error clearing cache:", e)
+
+            GLib.idle_add(self.on_clear_cache_finished)
+
+        threading.Thread(target=run_clean, daemon=True).start()
+
+    def on_clear_cache_finished(self):
+        self.update_system_stats()
+        self.clear_cache_btn.get_style_context().remove_class("clearing")
+        self.clear_cache_btn.get_style_context().add_class("done")
+        self.clear_cache_icon.set_text("󰄬")
+        self.clear_cache_lbl.set_text("System Boosted!")
+
+        def reset_btn():
+            self.clear_cache_btn.get_style_context().remove_class("done")
+            self.clear_cache_icon.set_text("󰃢")
+            self.clear_cache_lbl.set_text("Boost & Clear Cache")
+            self.clear_cache_btn.set_sensitive(True)
+            self.is_clearing = False
+            return False
+
+        GLib.timeout_add(2500, reset_btn)
 
     def create_media_card(self):
         card = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
