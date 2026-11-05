@@ -1,0 +1,37 @@
+{
+  "grid_snap": true,
+  "positions": {
+    "brave-browser.desktop": {
+      "x": 78,
+      "y": 64
+    },
+    "com.microsoft.VSCode.desktop": {
+      "x": 78,
+      "y": 172
+    },
+    "discord.desktop": {
+      "x": 78,
+      "y": 280
+    },
+    "firefox.desktop": {
+      "x": 78,
+      "y": 388
+    },
+    "kitty.desktop": {
+      "x": 494,
+      "y": 64
+    },
+    "spotify.desktop": {
+      "x": 286,
+      "y": 172
+    },
+    "2026": {
+      "x": 78,
+      "y": 712
+    },
+    "Version kai.png": {
+      "x": 78,
+      "y": 820
+    }
+  }
+}

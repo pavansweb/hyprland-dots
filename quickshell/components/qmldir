@@ -1,0 +1,9 @@
+module qs.components
+ClockWidget 1.0 ClockWidget.qml
+CalendarWidget 1.0 CalendarWidget.qml
+SystemMonitor 1.0 SystemMonitor.qml
+WeatherWidget 1.0 WeatherWidget.qml
+MusicWidget 1.0 MusicWidget.qml
+NotesWidget 1.0 NotesWidget.qml
+DesktopIcons 1.0 DesktopIcons.qml
+LeftDock 1.0 LeftDock.qml

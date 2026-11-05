@@ -9,10 +9,10 @@ wallDir="/home/zen/Pictures/wallpapers"
 cacheDir="$HOME/.config/hypr/.cache"
 scrDir="$HOME/.config/hypr/scripts"
 
-# Transition config (standard for this setup)
-FPS=60
-TYPE="random"
-DURATION=1
+# Transition config (optimized for GT 710 GPU - smooth 30fps transition)
+FPS=30
+TYPE="wipe"
+DURATION=0.8
 BEZIER=".43,1.19,1,.4"
 AWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
 

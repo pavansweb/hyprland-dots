@@ -53,13 +53,12 @@ hl.on("hyprland.start", function()
     hl.exec_cmd("hyprctl setcursor layan-white-cursors 24")
     hl.exec_cmd(scriptsDir .. "/startup.sh")
     hl.exec_cmd("hypridle")
-    hl.exec_cmd("hyprsunset")
+    hl.exec_cmd(scriptsDir .. "/nightlight.sh --init")
     hl.exec_cmd("swaync")
     hl.exec_cmd("blueman-applet &")
     hl.exec_cmd(scriptsDir .. "/polkit.sh")
     hl.exec_cmd("wl-paste --type text --watch cliphist store")
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
-    hl.exec_cmd("pypr &")
 end)
 
 hl.on("config.reloaded", function()
@@ -74,19 +73,22 @@ end)
 hl.config({
     general = {
         layout = "dwindle",
-        gaps_in = 0,
-        gaps_out = 0,
+        gaps_in = 3,
+        gaps_out = 6,
         border_size = 2,
         resize_on_border = true,
         allow_tearing = false,
         col = {
-            active_border = "rgba(8cc6c8FF)",
-            inactive_border = "rgba(9C5759FF)",
+            active_border = {
+                colors = { "rgba(7aa2f7ee)", "rgba(bb9af7ee)" },
+                angle = 45,
+            },
+            inactive_border = "rgba(1a1b26aa)",
         },
     },
 
     decoration = {
-        rounding = 8,
+        rounding = 10,
         rounding_power = 2,
         fullscreen_opacity = 1.0,
         dim_strength = 0.1,
@@ -95,8 +97,8 @@ hl.config({
             enabled = false,
             range = 0,
             render_power = 4,
-            color = "rgba(8cc6c8FF)",
-            color_inactive = "rgba(9C5759FF)",
+            color = "rgba(7aa2f7ee)",
+            color_inactive = "rgba(1a1b26aa)",
         },
         blur = {
             enabled = true,
@@ -143,6 +145,7 @@ hl.config({
         mouse_move_enables_dpms = true,
         enable_swallow = true,
         swallow_regex = "^(kitty)$",
+        swallow_exception_regex = "^(antigravity)$",
         focus_on_activate = false,
         initial_workspace_tracking = 0,
         middle_click_paste = false,
@@ -174,6 +177,14 @@ hl.config({
         warp_on_change_workspace = 2,
         no_warps = true,
     },
+
+    debug = {
+        vfr = true,
+    },
+
+    render = {
+        direct_scanout = 1,
+    },
 })
 
 --------------------
@@ -196,7 +207,7 @@ hl.animation({ leaf = "windowsIn", enabled = true, speed = 5, bezier = "elegant_
 hl.animation({ leaf = "windowsOut", enabled = true, speed = 4, bezier = "md3_accel", style = "slide up" })
 hl.animation({ leaf = "windowsMove", enabled = true, speed = 5, bezier = "fluent_decel", style = "slide" })
 hl.animation({ leaf = "border", enabled = true, speed = 3, bezier = "md3_decel" })
-hl.animation({ leaf = "borderangle", enabled = true, speed = 30, bezier = "linear", style = "loop" })
+hl.animation({ leaf = "borderangle", enabled = false, speed = 30, bezier = "linear" }) -- disabled loop for 0% idle GPU on GT 710
 hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "md3_decel" })
 hl.animation({ leaf = "workspaces", enabled = true, speed = 5, bezier = "fluent_decel", style = "slidevert" })
 hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 5, bezier = "md3_decel", style = "slidefadevert 15%" })
@@ -226,6 +237,7 @@ local floating_classes = {
     "^(com.gabm.satty)$",
     "^(org.gnome.Nautilus|caja)$",
     "^(xdg-desktop-portal-gtk)$",
+    "^(org.xfce.mousepad)$",
 }
 
 for idx, cls in ipairs(floating_classes) do
@@ -236,6 +248,14 @@ for idx, cls in ipairs(floating_classes) do
         center = true,
     })
 end
+
+hl.window_rule({
+    name = "mousepad_float_centered",
+    match = { class = "^(org.xfce.mousepad)$" },
+    float = true,
+    center = true,
+    size = { 1000, 750 },
+})
 
 hl.window_rule({
     name = "kitty_floating_dialogs",
@@ -265,11 +285,37 @@ hl.window_rule({
     workspace = 1,
 })
 
-hl.layer_rule({ match = { namespace = "waybar" }, blur = true })
-hl.layer_rule({ match = { namespace = "rofi" }, blur = true })
-hl.layer_rule({ match = { namespace = "notifications" }, blur = true })
-hl.layer_rule({ match = { namespace = "gtk-layer-shell" }, blur = true })
-hl.layer_rule({ match = { namespace = "desktop-widget" }, blur = true })
+hl.window_rule({
+    name = "workspace_antigravity",
+    match = { class = "^(antigravity)$" },
+    workspace = 3,
+    opacity = "0.90 0.82",
+})
+
+hl.window_rule({
+    name = "scratch_kitty_dropterm",
+    match = { class = "^(kitty-dropterm)$" },
+    workspace = "special:scratch_term",
+    float = true,
+    center = true,
+    size = { 1344, 648 },
+})
+
+hl.window_rule({
+    name = "scratch_kitty_calc",
+    match = { class = "^(kitty-calc)$" },
+    workspace = "special:scratch_calc",
+    float = true,
+    center = true,
+    size = { 730, 496 },
+})
+
+hl.layer_rule({ match = { namespace = "waybar" }, blur = true, ignore_alpha = 0.1 })
+hl.layer_rule({ match = { namespace = "rofi" }, blur = true, ignore_alpha = 0.1 })
+hl.layer_rule({ match = { namespace = "notifications" }, blur = true, ignore_alpha = 0.1 })
+hl.layer_rule({ match = { namespace = "gtk-layer-shell" }, blur = true, ignore_alpha = 0.1 })
+hl.layer_rule({ match = { namespace = "swaync-control-center" }, blur = true, ignore_alpha = 0.1 })
+hl.layer_rule({ match = { namespace = "swaync-notification-window" }, blur = true, ignore_alpha = 0.1 })
 
 ---------------------
 ---- KEYBINDINGS ----
@@ -322,7 +368,6 @@ hl.bind(mainMod .. " + s", hl.dsp.exec_cmd("kitty --title browser sh -c '" .. sc
 hl.bind("CTRL + ESCAPE", hl.dsp.exec_cmd(scriptsDir .. "/waybar-reload.sh --toggle"))
 hl.bind("CTRL + ALT + ESCAPE", hl.dsp.exec_cmd(scriptsDir .. "/waybar-reload.sh --reload"))
 hl.bind(mainMod .. " + CTRL + w", hl.dsp.exec_cmd(scriptsDir .. "/waybar-layout.sh"))
-hl.bind(mainMod .. " + backslash", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/hypr/widgets/toggle_widget.sh"))
 hl.bind(mainMod .. " + Delete", hl.dsp.exec_cmd(scriptsDir .. "/clear_cache.sh"))
 
 -- Lockscreen
@@ -369,16 +414,17 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
 hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
 
--- Pyprland integration
-hl.bind(mainMod .. " + a",         hl.dsp.exec_cmd("pypr toggle term"))
-hl.bind(mainMod .. " + SHIFT + b", hl.dsp.exec_cmd("pypr expose"))
-hl.bind(mainMod .. " + SHIFT + j", hl.dsp.exec_cmd("pypr change_workspace -1"))
-hl.bind(mainMod .. " + SHIFT + k", hl.dsp.exec_cmd("pypr change_workspace +1"))
-hl.bind(mainMod .. " + n",         hl.dsp.exec_cmd("pypr toggle_special minimized"))
-hl.bind(mainMod .. " + SHIFT + n", hl.dsp.workspace.toggle_special("minimized"))
-hl.bind(mainMod .. " + SHIFT + o", hl.dsp.exec_cmd("pypr shift_monitors +1"))
-hl.bind(mainMod .. " + SHIFT + z", hl.dsp.exec_cmd("pypr zoom ++0.5"))
-hl.bind(mainMod .. " + z",         hl.dsp.exec_cmd("pypr zoom"))
+-- Native Zero-Overhead Scratchpads & Workspaces
+hl.bind(mainMod .. " + a",         hl.dsp.exec_cmd(scriptsDir .. "/scratchpad.sh term"))
+hl.bind(mainMod .. " + c",         hl.dsp.exec_cmd(scriptsDir .. "/scratchpad.sh calc"))
+hl.bind(mainMod .. " + p",         hl.dsp.exec_cmd(scriptsDir .. "/scratchpad.sh volume"))
+hl.bind(mainMod .. " + n",         hl.dsp.exec_cmd(scriptsDir .. "/scratchpad.sh minimize"))
+hl.bind(mainMod .. " + SHIFT + n", hl.dsp.exec_cmd(scriptsDir .. "/scratchpad.sh restore"))
+hl.bind(mainMod .. " + grave",         hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mainMod .. " + SHIFT + grave", hl.dsp.window.move({ workspace = "special:magic" }))
+
+-- Performance / Game Mode (Cuts blur & animations for max FPS on GT 710)
+hl.bind(mainMod .. " + F12",       hl.dsp.exec_cmd(scriptsDir .. "/gamemode.sh"))
 
 -- Custom App Shortcuts
 hl.bind("F2",                    hl.dsp.exec_cmd('brave "https://mail.google.com"'))
@@ -405,3 +451,8 @@ hl.bind("XF86AudioNext",        hl.dsp.exec_cmd("playerctl next"), { locked = tr
 hl.bind("XF86AudioStop",        hl.dsp.exec_cmd("playerctl stop"), { locked = true })
 hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd(scriptsDir .. "/brightness.sh up"))
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd(scriptsDir .. "/brightness.sh down"))
+
+-- Night light filter
+hl.bind(mainMod .. " + F1", hl.dsp.exec_cmd(scriptsDir .. "/nightlight.sh --dec"))
+hl.bind(mainMod .. " + F2", hl.dsp.exec_cmd(scriptsDir .. "/nightlight.sh --inc"))
+hl.bind(mainMod .. " + F3", hl.dsp.exec_cmd(scriptsDir .. "/nightlight.sh --def"))

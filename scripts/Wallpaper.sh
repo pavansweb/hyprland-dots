@@ -13,10 +13,10 @@ wallDir="$HOME/.config/hypr/Wallpapers/${theme}"
 PICS=($(find ${wallDir} -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.gif" \)))
 wallpaper=${PICS[ $RANDOM % ${#PICS[@]} ]}
 
-# Transition config
-FPS=60
-TYPE="random"
-DURATION=1
+# Transition config (optimized for smooth transition on GT 710)
+FPS=30
+TYPE="wipe"
+DURATION=0.8
 BEZIER=".43,1.19,1,.4"
 AWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
 

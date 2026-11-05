@@ -1,0 +1,5 @@
+module qs.services
+singleton SystemService 1.0 SystemService.qml
+singleton WeatherService 1.0 WeatherService.qml
+singleton MusicService 1.0 MusicService.qml
+singleton ApplicationService 1.0 ApplicationService.qml

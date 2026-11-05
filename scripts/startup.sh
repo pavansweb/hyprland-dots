@@ -4,10 +4,10 @@ scrDir="$HOME/.config/hypr/scripts"
 wallpaper="$HOME/.config/hypr/.cache/current_wallpaper.png"
 monitor_config="$HOME/.config/hypr/confs/monitor.conf"
 
-# Transition config
-FPS=60
-TYPE="any"
-DURATION=2
+# Transition config (optimized for GT 710)
+FPS=30
+TYPE="wipe"
+DURATION=0.8
 BEZIER=".43,1.19,1,.4"
 AWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
 if command -v awww &> /dev/null; then
@@ -48,7 +48,5 @@ hyprctl reload
 pkill waybar
 waybar &
 
-# desktop widget
-pkill -f desktop_widget.py 2>/dev/null || true
-python3 "$HOME/.config/hypr/widgets/desktop_widget.py" &
+
 
